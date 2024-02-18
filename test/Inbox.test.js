@@ -20,5 +20,25 @@ const ganache = require('ganache')
 
 const assert = require('assert');//used to make assertions
 
-//Creating an instance of Web3
+//Creating an instance of Web3, tells the instance to attempt to connect to the ganache network provide
+const web3 = new Web3(ganache.provider());
+
+//Mocha
+/** MOCHA - A TEST RUNNING FRAMEWORK (GENERAL PURPOSE TESTING TOOL)
+ * 
+ * CAN BE USED TO TEST ANY JS AND SOL CODE
+ * 
+ *          MOCHA FUNTIONS
+ * 
+ * 1. [ it ] - Run a test and make an assertion(taking two values, the value our code produces and one that we think should be equal to that value)
+ * 
+ * 2. [ describe ] - Groups together [ it ] functions
+ * 
+ * 3. [ beforeEach ] - Execute some general setup code, this is a utility function that does similar tasks
+ * 
+ * 
+ */
+
+
+
 
