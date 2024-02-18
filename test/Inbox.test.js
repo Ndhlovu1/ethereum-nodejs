@@ -19,6 +19,7 @@ const { Web3 } = require('web3')
 const ganache = require('ganache')
 
 const assert = require('assert');//used to make assertions
+const { before } = require('mocha');
 
 //Creating an instance of Web3, tells the instance to attempt to connect to the ganache network provide
 const web3 = new Web3(ganache.provider());
@@ -39,6 +40,53 @@ const web3 = new Web3(ganache.provider());
  * 
  */
 
+class Car {
 
+    park(){
+        return 'stopped';
+    }
+
+    drive(){
+        return 'vroom';
+    }
+
+}
+
+let car;
+
+//UTILIZING A BEFORE EACH CALL. THIS DOES INITIALIZATION
+beforeEach(()=>{
+    console.log('a')
+    car = new Car();
+
+});
+
+describe('Car-Test',()=>{
+
+    //This will contain more it tests
+
+    it('Testing-Park',()=>{
+        assert.equal(car.park(),'stopped');
+    });
+
+    it('Testing-Start',()=>{
+
+        assert.equal(car.drive(),'vroom')
+
+
+    });
+
+});
+
+/**             RUNNING MOCHA
+ * 
+ * 1. ADD A SCRIPT TO PACKAGE.json 
+ * 
+ * 2. REPLACE THE TEST VALUE BY THE WORD 'mocha'
+ * 
+ * 3. RUN THE COMMAND npm run test
+ * 
+ * 
+ * */
 
 
