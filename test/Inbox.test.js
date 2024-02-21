@@ -19,10 +19,44 @@ const { Web3 } = require('web3')
 const ganache = require('ganache')
 
 const assert = require('assert');//used to make assertions
-const { before } = require('mocha');
+const { before, interfaces } = require('mocha');
+
+const { interface, bytecode } = require('../compile')
 
 //Creating an instance of Web3, tells the instance to attempt to connect to the ganache network provide
 const web3 = new Web3(ganache.provider());
+
+//todo : READ ABOUT MOCHA FROM DOWN BELOW
+/**
+ * 1. MOCHA STARTS
+ * 2. DEPLOY A NEW CONTRACT [beforeEach]
+ * 3. MANIPULATE THE CONTRACT [ it ]
+ * 4. MAKE AN ASSERTION ABOUT THE CONTRACT THEN RETURN TO STEP 2 [ it ]
+ * 
+ **/
+
+let accounts;
+let inbox;
+
+beforeEach(async()=>{
+    //GET A LIST OF ALL UNLOCKED ACCOUNTS WE CAN SEND AND RECEIVE MONEY TO AND FROM THESE ARE USED BY GANACHE
+    accounts = await web3.eth.getAccounts();
+
+    //Use one of the accounts to create the app
+    inbox = await new web3.eth.Contract(JSON.parse(interface))
+    .deploy({data :  bytecode, arguments: ['Hi There!']})
+    .send({from : accounts[0], gas: '1000000'})
+
+
+});
+
+describe('Inbox', () => {
+  it('deploys a contract',()=>{
+    console.log(inbox)
+  })
+})
+
+
 
 //Mocha
 /** MOCHA - A TEST RUNNING FRAMEWORK (GENERAL PURPOSE TESTING TOOL)
@@ -40,6 +74,7 @@ const web3 = new Web3(ganache.provider());
  * 
  */
 
+/**
 class Car {
 
     park(){
@@ -77,6 +112,8 @@ describe('Car-Test',()=>{
     });
 
 });
+
+**/
 
 /**             RUNNING MOCHA
  * 
