@@ -67,6 +67,19 @@ describe('Inbox', () => {
 
   })
 
+  //MODIFY THE CONTRACT'S DATA, SPECIFY WHO IS ISSUING THE TRANSACTION
+
+  it('Can change the message', async() => {
+    //TO change the message in the contract() - IF everything happens ok then no error 
+    await inbox.methods.setMessage("Chao").send({  from: accounts[0]})
+    const message = await inbox.methods.message().call()
+    assert.equal(message, 'Chao')
+
+
+
+
+  })
+
 
 
 })
