@@ -23,6 +23,8 @@ const { before, interfaces } = require('mocha');
 
 const { interface, bytecode } = require('../compile')
 
+const INITIAL_MSG = "Hi There"
+
 //Creating an instance of Web3, tells the instance to attempt to connect to the ganache network provide
 const web3 = new Web3(ganache.provider());
 
@@ -43,17 +45,30 @@ beforeEach(async()=>{
     accounts = await web3.eth.getAccounts();
 
     //Use one of the accounts to create the app
-    inbox = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({data :  bytecode, arguments: ['Hi There!']})
-    .send({from : accounts[0], gas: '1000000'})
-
+    inbox = await new web3.eth.Contract(JSON.parse(interface)) // Teaches web3 about what methods our contract Incbox is currently having, the parse will make us get a js interface
+        .deploy({data :  bytecode, arguments: [INITIAL_MSG]}) //Tells Web3 that we want to deploy a new copy of our contract, this will create the transaction for the data
+        .send({from : accounts[0], gas: '1000000'}) // Instructs web3 to send out a transaction that creates this contract. This triggers the network to create the contract
 
 });
 
 describe('Inbox', () => {
-  it('deploys a contract',()=>{
-    console.log(inbox)
+  it('Deployed a Contract',()=>{
+    console.log("ADDRESS --- ",inbox._address)
+    assert.ok(inbox.options.address); // Show us where this contract was deployed to
   })
+
+  //Deploying our contract always gets a default value
+  it('has a default message', async()=>{
+    //Reference the contract on the blockchain, then call methods which shows all public functions
+    //We must use a parenthesis when calling a method and the 2nd attached to the .call()
+    //the 2nd method is used to customize the message, and it will specify who will pay for the contract
+    const message = await inbox.methods.message().call();
+    assert.equal(message, INITIAL_MSG)
+
+  })
+
+
+
 })
 
 
