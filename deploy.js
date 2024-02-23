@@ -16,3 +16,20 @@ const provider = new HDWalletProvider(
 );
 
 const web3 = new Web3(provider);
+
+//We are using a function because we cannot use async await in the global scope
+const deploy = async () => {
+    //Get a list of the unlocked accounts
+    const accounts = await web3.eth.getAccounts();
+    console.log('Attempting to deploy from account', accounts[0]);
+
+    //Deploy the contract
+    const result = await new web3.eth.Contract(JSON.parse(interface))
+        .depoy({data : bytecode, arguments: ['Hi There']})
+        .send({gas: '1000000', from: accounts[0]});
+
+    console.log("Deployed Contract to", result.options.address);
+
+}
+
+deploy();
