@@ -75,6 +75,8 @@ describe('Inbox', () => {
     const message = await inbox.methods.message().call()
     assert.equal(message, 'Chao')
 
+    
+
 
 
 
